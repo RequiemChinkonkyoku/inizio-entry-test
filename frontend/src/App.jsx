@@ -31,6 +31,18 @@ function App() {
     }
   };
 
+  const handleDownloadJson = () => {
+    const blob = new Blob([JSON.stringify(results, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `results-${query}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div style={{ fontFamily: "Arial", padding: "20px" }}>
       <h1>Google Scraper (SerpAPI)</h1>
@@ -61,6 +73,14 @@ function App() {
           </li>
         ))}
       </ul>
+      {results.length > 0 && (
+        <button
+          onClick={handleDownloadJson}
+          style={{ marginTop: "10px", padding: "8px 12px" }}
+        >
+          Download JSON
+        </button>
+      )}
     </div>
   );
 }
